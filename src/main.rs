@@ -5,27 +5,23 @@ use ratatui::{
 
 use crossterm::event;
 
-type Err = Box<dyn std::error::Error>;
 type Result<T> = std::result::Result<T, Err>;
 pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>;
 
 #[derive(Debug)]
-#[allow(unused)]
 struct App {
     is_running: bool,
     msg: String,
 }
 
-#[allow(unused)]
-fn startup() -> Result<()> {
-  // startup: Enable raw mode for the terminal, giving us fine control over user input
+fn startup() -> result<()> {
+  // startup: enable raw mode for the terminal, giving us fine control over user input
   crossterm::terminal::enable_raw_mode()?;
-  crossterm::execute!(std::io::stderr(), crossterm::terminal::EnterAlternateScreen)?;
-  Ok(())
+  crossterm::execute!(std::io::stderr(), crossterm::terminal::enteralternatescreen)?;
+  ok(())
 }
 
-#[allow(unused)]
-fn close() -> Result<()> {
+fn close() -> result<()> {
   // shutdown down: reset terminal back to original state
   crossterm::execute!(std::io::stderr(), crossterm::terminal::LeaveAlternateScreen)?;
   crossterm::terminal::disable_raw_mode()?;
@@ -45,8 +41,6 @@ fn update(app: &mut App) -> Result<()> {
             if key.kind == event::KeyEventKind::Press {
                 match key.code {
                     event::KeyCode::Char('q') => app.is_running = false,
-                    event::KeyCode::Char('r') => app.msg = String::from("rust"),
-                    event::KeyCode::Char('v') => app.msg = String::from("vscode sucks"),
                     _ => (),
                 }
             }
